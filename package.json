@@ -1,0 +1,25 @@
+{
+  "name": "wawusermanagementservice",
+  "version": "1.0.0",
+  "description": "Worth-a-Watch's User Management Service provides the API for login processes and also provides the API for more profile-related elements",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run test -- --coverage "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dunder-Mifflin-Devs/WaWuserManagementService.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dunder-Mifflin-Devs/WaWuserManagementService/issues"
+  },
+  "homepage": "https://github.com/Dunder-Mifflin-Devs/WaWuserManagementService#readme",
+  "devDependencies": {
+    "jest": "^29.6.3"
+  }
+}
