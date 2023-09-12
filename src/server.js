@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const yn = require('yn');
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
@@ -9,6 +10,9 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require('./routes/main')
+
+const PORT = process.env.PORT || 3000;
+
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -32,7 +36,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/pizza" }),
+    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/" }),
   })
 );
 
@@ -56,9 +60,9 @@ app.use(cors(corsOptions))
 //Connect To Database
 connectDB().then(() => {
   //Server Running
-  app.listen(process.env.PORT, () => {
+  app.listen(PORT, () => {
     console.log(
-      `Server is running on ${process.env.PORT}, you better catch it!`
+      `Server is running on ${PORT}, you better catch it!`
     );
   });
 });

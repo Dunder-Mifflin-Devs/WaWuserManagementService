@@ -1,6 +1,7 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const mongoose = require("mongoose")
 
 // exports.getLogin = (req, res) => {
 //   if (req.user) {
@@ -65,16 +66,11 @@ const User = require("../models/User");
 //   });
 // };
 
-exports.postSignup = (req, res, next) => {
+exports.postSignup = async (req, res, next) => {
+  console.log(req.body)
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
-  if (!validator.isLength(req.body.password, { min: 8 }))
-    validationErrors.push({
-      msg: "Password must be at least 8 characters long",
-    });
-  if (req.body.password !== req.body.confirmPassword)
-    validationErrors.push({ msg: "Passwords do not match" });
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
@@ -85,34 +81,30 @@ exports.postSignup = (req, res, next) => {
   });
 
   const user = new User({
+    _id: new mongoose.Types.ObjectId(),
     userName: req.body.userName,
-    email: req.body.email,
-    password: req.body.password,
+    userEmail: req.body.email,
+    passHash: req.body.password,
   });
 
-  User.findOne(
-    { $or: [{ email: req.body.email }, { userName: req.body.userName }] },
-    (err, existingUser) => {
-      if (err) {
-        return next(err);
-      }
-      if (existingUser) {
-        req.flash("errors", {
-          msg: "Account with that email address or username already exists.",
-        });
-        return res.redirect("../signup");
-      }
-      user.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err);
-          }
-          res.redirect("/profile");
-        });
-      });
-    }
-  );
+  let existingUser = await User.findOne({ $or: [{ email: req.body.email }, { userName: req.body.userName }] })
+  if (existingUser) {
+    req.flash("errors", {
+      msg: "Account with that email address or username already exists.",
+    });
+    return //res.redirect("../signup");
+  }
+  await user.save()
+    
+  // (err) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   req.logIn(user, (err) => {
+  //     if (err) {
+  //       return next(err);
+  //     }
+  //     res.redirect("/profile");
+  //   });
+  // };
 };
