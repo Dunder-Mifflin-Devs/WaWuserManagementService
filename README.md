@@ -12,3 +12,9 @@
 
 This service will need to communicate with the WaWController, as well as with the collections for user login and user profile.
 
+## To run this service:
+```npm install```
+
+
+```npm start dev``` for Nodemon Developer Mode || ```npm test``` for Test Mode || ```npm start``` for Production App
+

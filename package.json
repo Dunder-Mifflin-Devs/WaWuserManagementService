@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "npm run test -- --coverage ",
-    "dev": "concurrently \"cd src && node server.js\" \"cd src && node dev-mongo.js\""
+    "dev": "concurrently \"cd src && node server.js\" \"cd src && node dev-mongo.js\"",
+    "start": "node server.js",
+    "start dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -38,6 +40,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "session": "^0.1.0",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "yn": "^4.0.0"
   }
 }
