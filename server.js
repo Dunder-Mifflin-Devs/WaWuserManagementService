@@ -4,7 +4,7 @@ const yn = require('yn');
 const port = process.env.PORT || 3000;
 const passport = require('passport');
 const session = require('express-session');
-const routes = require('./test/routes/routes.js');
+const routes = require('./src/routes/routes.js');
 
 require('dotenv').config({ path: './config/.env' });
 
