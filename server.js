@@ -4,12 +4,12 @@ const yn = require('yn');
 const port = process.env.PORT || 3000;
 const passport = require('passport');
 const session = require('express-session');
-const routes = require('./src/routes/routes.js');
+const routes = require('./test/routes/routes.js');
 
 require('dotenv').config({ path: './config/.env' });
 
 // Configure Express session
-app.use(session({ secret: 'your-secret-key', resave: true, saveUninitialized: true }));
+app.use(session({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
 
 // Initialize Passport and use session for persistent login sessions
 app.use(passport.initialize());

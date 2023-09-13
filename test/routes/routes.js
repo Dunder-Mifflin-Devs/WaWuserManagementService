@@ -2,41 +2,36 @@ const express = require('express');
 const passport = require('passport');
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 
+require('dotenv').config({ path: '/../../config/.env' });
+
 const router = express.Router();
 
-// Replace these with your actual OAuth 2.0 credentials from the provider
-const clientID = 'your-client-id';
-const clientSecret = 'your-client-secret';
-const authorizationURL = 'https://example.com/auth/oauth2/authorize';
-const tokenURL = 'https://example.com/auth/oauth2/token';
-const callbackURL = 'http://localhost:3000/auth/callback'; // Update this with your callback URL
-
 // Define the OAuth 2.0 strategy
-passport.use(
-  'oauth2',
-  new OAuth2Strategy(
+passport.use( new OAuth2Strategy(
     {
-      authorizationURL,
-      tokenURL,
-      clientID,
-      clientSecret,
-      callbackURL,
+      authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
+      tokenURL:'https://oauth2.googleapis.com/token',
+      clientID: '259520590873-88gpvkki15tgs1oadm118hnkmq3ojlr8.apps.googleusercontent.com',
+      clientSecret: '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',
+      callbackURL: 'http://localhost:3000/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       // Here, you can perform actions after a successful authentication,
       // like fetching user data and saving it to a database.
       // 'profile' may contain user information returned by the OAuth provider.
-      return done(null, profile);
+        User.findOrCreate({ exampleId: profile.id }, function (err, user) {
+        return done(err, user);
+      });
     }
   )
 );
 
 // OAuth 2.0 authentication route
-router.get('/auth', passport.authenticate('oauth2'));
+router.get('/auth', passport.authenticate('oauth2', { scope: ['profile', 'email'] }));
 
 // OAuth 2.0 callback route
 router.get(
-  '/auth/callback',
+  '/auth/google/callback',
   passport.authenticate('oauth2', { failureRedirect: '/' }),
   (req, res) => {
     // Successful authentication; redirect or respond as needed
